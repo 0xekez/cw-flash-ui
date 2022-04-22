@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .loan {
+	--background: 150, 135, 77;
+	--card: 64, 69, 106;
+	--accent: 166, 44, 55;
+    }
+
+    .provide {
+	--background: 181, 209, 204;
+	--card: 79, 143, 230;
+	--accent: 156, 82, 242;
+    }
+
+    .docs {
+	--background: 255, 191, 110;
+	--card: 201, 48, 62;
+	--accent: 86, 170, 105;
+
+    }
+}
+
+@font-face {
+    font-family: 'studiofeixen';
+    src: url('https://fonts.withoutdoing.com/StudioFeixenSansEdgy-Bold.eot');
+    src: url('https://font.withoutdoing.com/StudioFeixenSansEdgy-Bold.eot') format('embedded-opentype'),
+	 url('https://fonts.withoutdoing.com/StudioFeixenSansEdgy-Bold.woff2') format('woff2'),
+	 url('https://fonts.withoutdoing.com/StudioFeixenSansEdgy-Bold') format('woff'),
+	 url('https://fonts.withoutdoing.com/StudioFeixenSansEdgy-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .font-header {
+    font-family: 'studiofeixen'; 
+    letter-spacing: -0.015em; /* adjust letter spacing depending on font size */
+    word-spacing: -0.1em; /* adjust word spacing depending on font size */
+    -webkit-font-smoothing: antialiased; /* looks better */
+    -moz-osx-font-smoothing: grayscale; /* looks better */
+    line-height: 1.2;
+  }
+}
