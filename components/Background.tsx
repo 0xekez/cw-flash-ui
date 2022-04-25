@@ -45,7 +45,11 @@ export const Background: FC<BackgroundProps> = ({ children, theme }) => {
           )
         }
       </Toaster>
-      <div className="relative min-h-[496px] w-[750px] max-w-full rounded bg-background p-6">
+      <div
+        className={`relative mt-9 ${
+          connected ? 'mb-9' : ''
+        } min-h-[496px] w-[750px] max-w-full bg-background p-6 md:mt-0 md:rounded`}
+      >
         {children}
         <div className="absolute -bottom-7 right-1 text-right">
           {connected && (
@@ -57,7 +61,7 @@ export const Background: FC<BackgroundProps> = ({ children, theme }) => {
             </p>
           )}
         </div>
-        <div className="absolute -bottom-7 left-1 flex flex-row gap-2 lg:-right-[5rem] lg:top-6 lg:bottom-auto lg:left-auto lg:flex-col lg:gap-0">
+        <div className="absolute -top-7 left-1 flex flex-row gap-2">
           <Link href="/" passHref>
             <a className={`font-mono ${pathname === '/' && 'underline'}`}>
               Loan
