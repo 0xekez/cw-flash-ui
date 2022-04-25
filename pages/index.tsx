@@ -145,7 +145,7 @@ const Home: NextPage = () => {
                   width={16}
                   height={16}
                 />
-                <Mono>juno</Mono>
+                <Mono>Juno</Mono>
               </div>
             ) : (
               <Mono>{amountError}</Mono>
