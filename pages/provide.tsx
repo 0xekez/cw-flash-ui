@@ -68,7 +68,7 @@ const Provide: NextPage = () => {
   const provided = useRecoilValueLoadable(walletProvidedSelector)
   const setStateUpdates = useSetRecoilState(stateUpdatesAtom)
 
-  const { connect, connected, address, nativeBalance } = useWallet()
+  const { connect, connected, nativeBalance } = useWallet()
 
   useEffect(
     () => setAmountError(validate ? validateAmount(amount) : undefined),

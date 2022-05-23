@@ -57,7 +57,7 @@ export const USTValueSelector = selectorFamily({
       const client = get(cosmWasmClientSelector)
       try {
         const resp = await client.queryContractSmart(UST_SWAP_ADDR, {
-          token1_amount: juno,
+          token1_for_token2_price: { token1_amount: juno },
         })
         return resp.token2_amount
       } catch (_) {
