@@ -20,8 +20,8 @@ const Docs: NextPage = () => (
       <BigCard>
         <Title>Loaning</Title>
         <Mono>
-          To receive a loan provide a smart contract that has a `Receive {'{}'}`
-          execute message variant.
+          To receive a loan provide a smart contract that has a `ReceiveLoan{' '}
+          {'{}'}` execute message variant.
         </Mono>
         <Mono>
           From the UI, select the amount of Juno you would like to receive and
@@ -52,7 +52,7 @@ const Docs: NextPage = () => (
           <div className="flex flex-wrap gap-4 text-background">
             <a
               target="_blank"
-              href="https://github.com/ezekiiel/cw-flash-ui"
+              href="https://github.com/ezekiiel/cw-flash-loan"
               rel="noopener noreferrer"
             >
               <GitHub fill="currentColor" />
