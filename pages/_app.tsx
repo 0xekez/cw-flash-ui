@@ -15,9 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WalletManagerProvider
       walletConnectClientMeta={{
-        name: 'CosmodalExampleDApp',
-        description: 'A dApp using the @noahsaso/cosmodal library.',
-        url: 'https://noahsaso-cosmodal.vercel.app',
+        name: 'cw-flash-ui',
+        description: 'An example frontend for CosmWasm flash loans.',
+        url: 'https://cw-flash-ui.vercel.app',
         icons: ['https://moonphase.is/image.svg'],
       }}
       enabledWalletTypes={[WalletType.Keplr, WalletType.WalletConnectKeplr]}
