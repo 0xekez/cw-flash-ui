@@ -3,11 +3,9 @@ import { FC, ReactNode } from 'react'
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
 import { CubeIcon } from '@heroicons/react/outline'
 
-import { useRecoilValue } from 'recoil'
-import { signingCosmWasmClientSelector } from '../selectors/chain'
-import { walletAddressSelector } from '../selectors/keplr'
 import { Title } from './Title'
 import { ActionCard } from './ActionButton'
+import { useWallet } from '@noahsaso/cosmodal'
 
 export interface ExecuteCardProps {
   children: ReactNode
@@ -18,10 +16,9 @@ export interface ExecuteCardProps {
 }
 
 export const ExecuteCard: FC<ExecuteCardProps> = ({ children, onClick }) => {
-  const client = useRecoilValue(signingCosmWasmClientSelector)
-  const walletAddress = useRecoilValue(walletAddressSelector)
+  const { signingCosmWasmClient, address } = useWallet()
 
-  const wrapped = () => onClick(client, walletAddress)
+  const wrapped = () => onClick(signingCosmWasmClient, address)
 
   return <ActionCard onClick={wrapped}>{children}</ActionCard>
 }

@@ -15,4 +15,4 @@ export const FEE_DENOM = process.env.NEXT_PUBLIC_FEE_DENOM as string
 export const GAS_PRICE = process.env.NEXT_PUBLIC_GAS_PRICE as string
 
 export const CONTRACT_ADDR = process.env.NEXT_PUBLIC_CONTRACT_ADDR as string
-export const UST_SWAP_ADDR = process.env.NEXT_PUBLIC_UST_SWAP_ADDR as string
+export const USDC_SWAP_ADDR = process.env.NEXT_PUBLIC_USDC_SWAP_ADDR as string

@@ -5,10 +5,13 @@ import { Toaster } from 'react-hot-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { useWallet } from '../hooks/useWallet'
-
 import { ErrorToast } from '../components/ErrorToast'
 import { SuccessToast } from './SuccessToast'
+import {
+  useWallet,
+  useWalletManager,
+  WalletConnectionStatus,
+} from '@noahsaso/cosmodal'
 
 export interface BackgroundProps {
   children: ReactNode
@@ -16,7 +19,9 @@ export interface BackgroundProps {
 }
 
 export const Background: FC<BackgroundProps> = ({ children, theme }) => {
-  const { connected, name, disconnect } = useWallet()
+  const { disconnect, status, connectedWallet } = useWalletManager()
+  const connected = status === WalletConnectionStatus.Connected
+  const name = connectedWallet?.name
 
   const { pathname } = useRouter()
 

@@ -1,7 +1,5 @@
 # CosmWasm Flash Loan UI
 
-[cw-flash-ui.vercel.app](https://cw-flash-ui.vercel.app/)
-
 ![](./public/flash-preview.png)
 ![](./public/provide-preview.png)
 
@@ -27,7 +25,7 @@ things to note:
    anything mission critical.
 2. The flash loan contract and this contract are licensed under the
    AGPL. Please be sure to distribute the source code for the contract
-   along with any frontend you deploy using it. 
+   along with any frontend you deploy using it.
 
 ## How to use
 

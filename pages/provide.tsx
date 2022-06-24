@@ -2,7 +2,12 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { useSetRecoilState, useRecoilValueLoadable } from 'recoil'
+import {
+  useSetRecoilState,
+  useRecoilValueLoadable,
+  useRecoilValue,
+  constSelector,
+} from 'recoil'
 
 import { toast } from 'react-hot-toast'
 
@@ -25,21 +30,21 @@ import {
   ProvidedPercentLoading,
 } from '../components/Provided'
 
-import { useWallet } from '../hooks/useWallet'
-
 import { CONTRACT_ADDR, FEE_DENOM } from '../util/constants'
 import {
   convertDenomToMicroDenom,
   convertMicroDenomToDenom,
 } from '../util/conversion'
 
-import { stateUpdatesAtom, walletProvidedSelector } from '../selectors/contract'
+import { stateUpdatesAtom, providedSelector } from '../selectors/contract'
 
 import { TXHash } from '../components/TXHash'
 import {
   SmallActionCard,
   SmallActionCardLoading,
 } from '../components/SmallActionCard'
+import { useWalletManager, WalletConnectionStatus } from '@noahsaso/cosmodal'
+import { nativeBalanceSelector } from '../selectors/wallet'
 
 const Provide: NextPage = () => {
   const [amount, setAmount] = useState(0)
@@ -48,16 +53,29 @@ const Provide: NextPage = () => {
   const [validate, setValidate] = useState(false)
   const [amountError, setAmountError] = useState<string | undefined>(undefined)
 
+  const { connect, status, connectedWallet } = useWalletManager()
+
+  const nativeBalance = useRecoilValueLoadable(
+    connectedWallet
+      ? nativeBalanceSelector(connectedWallet.address)
+      : constSelector(0)
+  )
+
   const validateAmount = (amount: number) => {
     if (isNaN(amount)) {
       return 'Unspecified.'
     }
+    if (nativeBalance.state === 'loading') {
+      return 'Try again in a moment - native balance not yet loaded.'
+    }
+    const balance = nativeBalance.getValue()
+    if (balance === undefined) {
+      return 'Wallet not connected.'
+    }
 
     const nativeAmount = convertDenomToMicroDenom(amount)
-    if (nativeAmount > nativeBalance) {
-      return `Greater than Juno balance (${convertMicroDenomToDenom(
-        nativeBalance
-      )}).`
+    if (Number(nativeAmount) > balance) {
+      return `Greater than Juno balance (${convertMicroDenomToDenom(balance)}).`
     } else if (amount <= 0) {
       return 'Not positive.'
     } else {
@@ -65,10 +83,12 @@ const Provide: NextPage = () => {
     }
   }
 
-  const provided = useRecoilValueLoadable(walletProvidedSelector)
+  const provided = useRecoilValueLoadable(
+    connectedWallet
+      ? providedSelector(connectedWallet.address)
+      : constSelector('0')
+  )
   const setStateUpdates = useSetRecoilState(stateUpdatesAtom)
-
-  const { connect, connected, nativeBalance } = useWallet()
 
   useEffect(
     () => setAmountError(validate ? validateAmount(amount) : undefined),
@@ -235,7 +255,7 @@ const Provide: NextPage = () => {
         <Loader loading={loading} fallback={<TVLLoading />}>
           <TVL />
         </Loader>
-        {!connected ? (
+        {status !== WalletConnectionStatus.Connected ? (
           <ActionCard onClick={connect}>
             <Title>Connect wallet</Title>
           </ActionCard>

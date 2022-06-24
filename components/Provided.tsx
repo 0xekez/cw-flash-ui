@@ -1,9 +1,7 @@
+import { useWallet } from '@noahsaso/cosmodal'
 import { FC } from 'react'
-import { useRecoilValue } from 'recoil'
-import {
-  nativeTVLSelector,
-  walletProvidedSelector,
-} from '../selectors/contract'
+import { constSelector, useRecoilValue } from 'recoil'
+import { nativeTVLSelector, providedSelector } from '../selectors/contract'
 import {
   convertDenomToMicroDenom,
   convertMicroDenomToDenom,
@@ -15,7 +13,10 @@ export interface ProvidedPercentProps {
 }
 
 export const Provided: FC<ProvidedProps> = () => {
-  const provied = useRecoilValue(walletProvidedSelector)
+  const { address } = useWallet()
+  const provied = useRecoilValue(
+    address ? providedSelector(address) : constSelector('0')
+  )
 
   return <>{convertMicroDenomToDenom(provied)}</>
 }

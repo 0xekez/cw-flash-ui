@@ -2,12 +2,8 @@ import { FC } from 'react'
 
 import { CubeIcon } from '@heroicons/react/outline'
 
-import { useRecoilValue } from 'recoil'
-import { signingCosmWasmClientSelector } from '../selectors/chain'
-
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
-
-import { walletAddressSelector } from '../selectors/keplr'
+import { useWallet } from '@noahsaso/cosmodal'
 
 export interface SmallActionCardProps {
   text: string
@@ -21,13 +17,12 @@ export const SmallActionCard: FC<SmallActionCardProps> = ({
   text,
   onClick,
 }) => {
-  const client = useRecoilValue(signingCosmWasmClientSelector)
-  const walletAddress = useRecoilValue(walletAddressSelector)
+  const { signingCosmWasmClient, address } = useWallet()
 
   return (
     <button
       className="rounded-sm bg-accent py-2 px-4"
-      onClick={() => onClick(client, walletAddress)}
+      onClick={() => onClick(signingCosmWasmClient, address)}
     >
       <p className="font-header text-[14px] text-white">{text}</p>
     </button>

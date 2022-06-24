@@ -19,7 +19,6 @@ import { ActionCard } from '../components/ActionButton'
 import { TVL, TVLLoading } from '../components/TVL'
 import { Loader } from '../components/Loader'
 
-import { useWallet } from '../hooks/useWallet'
 import { nativeTVLSelector, stateUpdatesAtom } from '../selectors/contract'
 import { ExecuteCard, LoadingExecuteCard } from '../components/ExecuteCard'
 import {
@@ -29,9 +28,10 @@ import {
 import { isValidContractAddress } from '../util/validation'
 import { CONTRACT_ADDR } from '../util/constants'
 import { TXHash } from '../components/TXHash'
+import { useWalletManager, WalletConnectionStatus } from '@noahsaso/cosmodal'
 
 const Home: NextPage = () => {
-  const { connect, connected } = useWallet()
+  const { connect, status } = useWalletManager()
 
   const [loading, setLoading] = useState(false)
 
@@ -173,12 +173,12 @@ const Home: NextPage = () => {
         <Loader fallback={<TVLLoading />}>
           <TVL />
         </Loader>
-        {!connected && (
+        {status !== WalletConnectionStatus.Connected && (
           <ActionCard onClick={connect}>
             <Title>Connect wallet</Title>
           </ActionCard>
         )}
-        {connected &&
+        {status === WalletConnectionStatus.Connected &&
           (!amountError && !receiverError ? (
             <Loader
               loading={tvl.state === 'loading' || loading}

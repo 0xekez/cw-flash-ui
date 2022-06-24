@@ -2,9 +2,7 @@ import { selector, atom, selectorFamily } from 'recoil'
 
 import { cosmWasmClientSelector } from './chain'
 
-import { CONTRACT_ADDR, FEE_DENOM, UST_SWAP_ADDR } from '../util/constants'
-import { convertMicroDenomToDenom } from '../util/conversion'
-import { walletAddressSelector } from './keplr'
+import { CONTRACT_ADDR, FEE_DENOM, USDC_SWAP_ADDR } from '../util/constants'
 
 export const stateUpdatesAtom = atom({
   key: 'stateUpdatesAtom',
@@ -33,20 +31,19 @@ export const feeSelector = selector({
   },
 })
 
-export const walletProvidedSelector = selector({
+export const providedSelector = selectorFamily<string, string>({
   key: 'walletProvidedSelector',
-  get: async ({ get }) => {
-    get(stateUpdatesAtom)
-    const client = get(cosmWasmClientSelector)
-    const address = get(walletAddressSelector)
-    if (!address) {
-      return '0'
-    }
-    const provided = client.queryContractSmart(CONTRACT_ADDR, {
-      provided: { address },
-    })
-    return provided
-  },
+  get:
+    (address) =>
+    async ({ get }) => {
+      get(stateUpdatesAtom)
+      const client = get(cosmWasmClientSelector)
+
+      const provided = client.queryContractSmart(CONTRACT_ADDR, {
+        provided: { address },
+      })
+      return provided
+    },
 })
 
 export const USTValueSelector = selectorFamily({
@@ -55,14 +52,16 @@ export const USTValueSelector = selectorFamily({
     (juno: string) =>
     async ({ get }) => {
       const client = get(cosmWasmClientSelector)
-      try {
-        const resp = await client.queryContractSmart(UST_SWAP_ADDR, {
-          token1_for_token2_price: { token1_amount: juno },
-        })
-        return resp.token2_amount
-      } catch (_) {
-        // TODO(zeke): remove once on mainnet.
-        return (convertMicroDenomToDenom(juno) * 14.81).toString()
-      }
+      if (!client || !USDC_SWAP_ADDR) return '0'
+
+      const junoUSD = (
+        await client.queryContractSmart(
+          // Juno UST pool on Junoswap.
+          USDC_SWAP_ADDR,
+          { token1_for_token2_price: { token1_amount: '1000000' } }
+        )
+      ).token2_amount
+
+      return (Number(junoUSD) * Math.pow(10, -12) * Number(juno)).toString()
     },
 })
